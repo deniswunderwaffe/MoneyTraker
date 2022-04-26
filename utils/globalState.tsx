@@ -1,16 +1,22 @@
-import { createContext, useContext } from 'react';
+import {createContext, useContext, useState} from 'react';
 
 interface AppContextInterface {
-    isLoggedIn:boolean
+    isLoggedIn:boolean;
+    setIsLoggedIn:(value:boolean)=>void;
 }
 
 export const AppContext = createContext<AppContextInterface>({
-    isLoggedIn:false
+    isLoggedIn:false,
+    setIsLoggedIn: (value)=>{
+
+    }
 });
 
 export function AppWrapper({ children }:any) {
-    let sharedState = {
-        isLoggedIn:false
+    const [isLoggedIn,setIsLoggedIn] = useState(false);
+    let sharedState:AppContextInterface = {
+        isLoggedIn:isLoggedIn,
+        setIsLoggedIn: setIsLoggedIn
     }
 
     return (
