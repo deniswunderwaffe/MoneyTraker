@@ -1,10 +1,12 @@
 import {AppBar, Box, Button, IconButton, Toolbar, Typography} from '@mui/material';
 import React from 'react';
 import {AppContext} from "../utils/globalState";
+import {useRouter} from "next/router";
+import Link from 'next/link'
 
 const Navbar = () => {
     const appContext = React.useContext(AppContext);
-
+    const router = useRouter();
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
@@ -19,11 +21,14 @@ const Navbar = () => {
                         Test
                     </IconButton>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        News
+                        <Link href="/">
+                            <a>Home</a>
+                        </Link>
                     </Typography>
                     {appContext.isLoggedIn && (<Button onClick={()=> {
-                        sessionStorage.clear();
+                        localStorage.clear();
                         appContext.setIsLoggedIn(false);
+                        router.push("/login");
                     }} color="inherit">Log out</Button>)}
                 </Toolbar>
             </AppBar>
