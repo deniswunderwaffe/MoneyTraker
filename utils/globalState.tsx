@@ -1,10 +1,7 @@
-import React, {createContext, Dispatch, Reducer, useContext, useEffect, useReducer, useState} from 'react';
-import {Property} from "csstype";
-import Display = Property.Display;
+import React, {createContext, Dispatch, useContext, useEffect, useReducer, useState} from 'react';
 import {useRouter} from "next/router";
 import axios from "axios";
-import {useQuery} from "react-query";
-import $api from "./axiosDefaults";
+
 
 interface AppContextInterface {
     isLoggedIn: boolean;
@@ -68,30 +65,11 @@ const initialState:User = {
 export function AppWrapper({children}: any) {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [userState, dispatch] = useReducer(reducer, initialState);
-    const router = useRouter();
-
-    useEffect(() => {
-        if (localStorage.getItem("token")) {
-            check();
+    useEffect(()=>{
+        if(localStorage.getItem("token")){
             setIsLoggedIn(true);
-        } else {
-            router.push("/login")
         }
-    },[])
-    const check = async () => {
-        const result = await axios.head("https://localhost:7143/api/authentication", {
-            headers: {
-                "Authorization" : `Bearer ${localStorage.getItem("token")}`
-            }
-        });
-        if (result.status === 401) {
-            setIsLoggedIn(false);
-            await router.push("/login")
-        }
-    }
-
-
-
+    })
     let sharedState: AppContextInterface = {
         isLoggedIn: isLoggedIn,
         setIsLoggedIn: setIsLoggedIn,
